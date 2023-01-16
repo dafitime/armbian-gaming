@@ -1,95 +1,18 @@
 #!/bin/bash
 
+update
+libglu
 
-function menuJammy {
-echo "Please choose what you want to install! "
-echo "1. Install libglu1-mesa for Box64 on Jammy and Sid. "
-echo "2. Install/Update Box64. "
-echo "3. Install/update box86. "
-echo "4. Install wine 64 files. "
-echo "5. Install wine x86 files. "
-echo "6. Build and install PPSSPP. "
-echo "7. Exit "
+box64Jammy
 
-read choicevar
-if [ $choicevar -eq 1 ]
-	then 
-	libglu
-elif [ $choicevar -eq 2 ]
-	then 
-	box64Jammy
-elif [ $choicevar -eq 3 ]
-	then 
-	box86Jammy
-elif [ $choicevar -eq 4 ]
-	then 
-	wine64
-elif [ $choicevar -eq 5 ]
-	then 
-	winex86
-elif [ $choicevar -eq 6 ]
-	then 
-	installPPSSPP
-elif [ $choicevar -eq 7 ]
-	then
-	echo "Greetings, NicoD "
-	exit
-else 
-	echo "Invalid choice. "
-fi
-}
+box86Jammy
 
-function installPPSSPP {
-	cd ~
-	git clone --recurse-submodules https://github.com/hrydgard/ppsspp.git
-	cd ppsspp
-	git pull --rebase https://github.com/hrydgard/ppsspp.git
-	git submodule update --init --recursive
-	sudo apt -y install build-essential cmake libgl1-mesa-dev libsdl2-dev libvulkan-dev
-	/bin/bash ./b.sh
-	cd build
-	make
-	sudo make install
-}
+wine64
 
-function menuHirsute {
-echo "Hello. Please choose what you want to install ! "
-echo "1. Install all "
-echo "2. Install Box86 "
-echo "3. Install Box64 "
-echo "4. Install Wine x86 "
-echo "5. Install dependencies for N2/N2+ before Box86 install "
-echo "6. Exit armbian-gaming "
+winex86
 
-read choicevar
 
-if [ $choicevar -eq 1 ]
-	then 
-	all
-elif [ $choicevar -eq 2 ]
-	then 
-	box86
-elif [ $choicevar -eq 3 ]
-	then 
-	box64
-elif [ $choicevar -eq 4 ]
-	then 
-	winex86
-elif [ $choicevar -eq 5 ]
-	then 
-	depN2
-elif [ $choicevar -eq 6 ]
-	then
-	echo "Greetings, NicoD "
-	exit
-else 
-	echo "Invalid choice. "
-fi
-}
 
-function depN2 {
-	sudo apt install libavutil56:armhf libswresample3:armhf libavutil56:armhf libchromaprint1:armhf libavutil56:armhf libvdpau1:armhf
-}
 
 function box64Jammy {
 	sudo apt -y install cmake libsdl1.2debian
@@ -135,9 +58,9 @@ function winex86 {
 	echo "Created wine folder and copied libwine.so and libwine.so.1 "
 	echo " "
 	
-	echo "Download Wine 5.13 I686 https://sourceforge.net/projects/wine/files/Slackware%20Packages/5.13/i686/ "
-	echo "Copy content of /wine-5.13-i686-1sg/usr/ folder to ~/wine/ "
-	echo "When done, test with box86 wine winecfg. "
+	
+	sudo cp -r /wine-5.13-i686-1sg/usr/ ~/wine/
+	
 
 }
 
