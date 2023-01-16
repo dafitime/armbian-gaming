@@ -1,40 +1,22 @@
 #!/bin/bash
-function all{
+
+all
+
+function all {
 
 update
 libglu
-
 box64Jammy
-
 box86Jammy
-
-wine64
-
 winex86
-}
-
-function menuHirsute {
-echo "Hello. Please choose what you want to install ! "
-echo "1. Start"
-
-read choicevar
-
-if [ $choicevar -eq 1 ]
-	then 
-	all
+armfix
 }
 
 
-function box64Jammy {
-	sudo apt -y install cmake libsdl1.2debian
-	cd ~
-	git clone https://github.com/ptitSeb/box64
-	cd box64
-	mkdir build; cd build; cmake .. -DRPI4ARM64=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo
-	make -j4
-	sudo make install
-	menuJammy
-}
+	
+
+
+
 
 function winex86 {
 	sudo rm /usr/local/bin/wine
@@ -68,36 +50,18 @@ function winex86 {
 	cp libwine.so.1 ~/wine/lib/
 	echo "Created wine folder and copied libwine.so and libwine.so.1 "
 	echo " "
-	cd ~/Downloads
-	tar xvf /wine-5.13-i686-1sg.txz
+
+	tar xvf wine-5.13-i686-1sg.txz
 	sudo cp -r /wine-5.13-i686-1sg/usr/ ~/wine/
 	
 
 }
 
-function wine64 {
-	sudo rm -r ~/.wine/
-	sudo rm -r ~/wine/
-	cd ~
-	wget https://www.playonlinux.com/wine/binaries/phoenicis/upstream-linux-amd64/PlayOnLinux-wine-6.0.1-upstream-linux-amd64.tar.gz
-	mkdir ~/wine
-	cd ~/wine
-	tar xf ../PlayOnLinux-wine-6.0.1-upstream-linux-amd64.tar.gz
-	sudo rm /usr/local/bin/wine
-	sudo rm /usr/local/bin/wine64
-	sudo rm /usr/local/bin/wineserver
-	sudo rm /usr/local/bin/winecfg
-	sudo rm /usr/local/bin/wineboot
-	sudo ln -s ~/wine/bin/wine /usr/local/bin/wine
-	sudo ln -s ~/wine/bin/wine64 /usr/local/bin/wine64
-	sudo ln -s ~/wine/bin/wineserver /usr/local/bin/wineserver
-	sudo ln -s ~/wine/bin/winecfg /usr/local/bin/winecfg
-	sudo ln -s ~/wine/bin/wineboot /usr/local/bin/wineboot
-	cd ..
-	sudo rm PlayOnLinux-wine-6.0.1-upstream-linux-amd64.tar.gz
-	echo "Wine installed, test with : "
-	echo "box64 wine winecfg "
+function armfix {
+	tar xvf arm-linux-gnueabihf.txz
+	sudo cp -r /arm-linux-gnueabihf /
 }
+
 
 function update {
 	sudo apt -y update && apt -y upgrade
@@ -118,36 +82,23 @@ function box86 {
 	cd ..
 	cd ..
 	rm -r box86/
+	sudo apt install curl -y
+	curl https://github.com/fengxue-jrql/box86-and-box64-for-arm64/blob/main/box86-arm64-debian_20220116-1_arm64.deb && dpkg -i box86-arm64-debian_20220116-1_arm64.deb
+	
 }
 
 function dependencies {	
 	sudo apt -y install libllvm12:armhf
 	sudo apt -y install linux-libc-dev:armhf
-	sudo apt -y install git cmake libncurses6:armhf libc6:armhf  libx11-6:armhf libgdk-pixbuf2.0-0:armhf libgtk2.0-0:armhf libstdc++6:armhf libsdl2-2.0-0:armhf mesa-va-drivers:armhf libsdl1.2-dev:armhf libsdl-mixer1.2:armhf libpng16-16:armhf libcal3d12v5:armhf libsdl2-net-2.0-0:armhf libopenal1:armhf libsdl2-image-2.0-0:armhf libvorbis-dev:armhf libcurl4:armhf libjpeg62:armhf  libudev1:armhf libgl1-mesa-dev:armhf  libx11-dev:armhf libsmpeg0:armhf libavcodec58:armhf libavformat58:armhf libswscale5:armhf libsdl2-image-2.0-0:armhf libsdl2-mixer-2.0-0:armhf gcc-arm-linux-gnueabihf cmake git cabextract
-	dependenciesFix
-}
+	sudo apt -y install git cmake libncurses6:armhf libc6:armhf  libx11-6:armhf libgdk-pixbuf2.0-0:armhf libgtk2.0-0:armhf libstdc++6:armhf libsdl2-2.0-0:armhf mesa-va-drivers:armhf libsdl1.2-dev:armhf libsdl-mixer1.2:armhf libpng16-16:armhf libcal3d12v5:armhf libsdl2-net-2.0-0:armhf libopenal1:armhf libsdl2-image-2.0-0:armhf libvorbis-dev:armhf libcurl4:armhf libjpeg62:armhf  libudev1:armhf libgl1-mesa-dev:armhf  libx11-dev:armhf libsmpeg0:armhf libavcodec58:armhf libavformat58:armhf libswscale5:armhf libsdl2-image-2.0-0:armhf libsdl2-mixer-2.0-0:armhf gcc-arm-linux-gnueabihf cmake git cabextract screen xvfb ubuntu-desktop tracerx
 
-function dependenciesFix {
 	 sudo mv /usr/share/doc/linux-libc-dev/changelog.Debian.gz /usr/share/doc/linux-libc-dev/changelog.Debian.gz.old 
 	 sudo rm /usr/include/drm/drm_fourcc.h
 	 sudo rm /usr/include/drm/lima_drm.h
 	 sudo apt -y --fix-broken install
 }
 
-function box64 {
-	git clone https://github.com/ptitSeb/box64
-	cd box64
-	mkdir build
-	cd build
-	sudo apt -y install linux-libc-dev
-	sudo apt -y install build-essential 
-	sudo cmake .. -DRK3399=1 -DCMAKE_BUILD_TYPE=RelWithDebInfo
-	sudo make -j4
-	sudo make install
-	cd ..
-	cd ..
-	sudo rm -r box64/
-}
+
 
 function box86Jammy {
 	sudo apt -y install libc6-dev-armhf-cross git cmake gcc-arm-linux-gnueabihf 
@@ -172,3 +123,30 @@ function libglu {
 	
 }
 
+
+
+
+function restfix{
+# dependency install
+
+sudo dpkg --add-architecture armhf
+sudo apt update
+sudo apt install zenity:armhf libasound*:armhf libstdc++6:armhf mesa*:armhf
+
+ 
+
+# apt install
+
+sudo wget https://itai-nelken.github.io/weekly-box86-debs/debian/box86.list -O /etc/apt/sources.list.d/box86.list
+wget -qO- https://itai-nelken.github.io/weekly-box86-debs/debian/KEY.gpg | sudo apt-key add -
+sudo apt update && sudo apt install box86 -y
+
+ 
+
+# additional steps in chroot
+
+echo 'export BOX86_PATH=~/wine/bin/' | sudo tee -a /etc/profile
+echo 'export BOX86_LD_LIBRARY_PATH=~/wine/lib/wine/i386-unix/:/lib/i386-linux-gnu:/lib/aarch64-linux-gnu/' | sudo tee -a /etc/profile
+
+
+}
