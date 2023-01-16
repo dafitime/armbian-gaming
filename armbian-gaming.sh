@@ -1,4 +1,5 @@
 #!/bin/bash
+function all{
 
 update
 libglu
@@ -10,8 +11,20 @@ box86Jammy
 wine64
 
 winex86
+}
 
+function menuHirsute {
+echo "Hello. Please choose what you want to install ! "
+echo "1. Start"
 
+read choicevar
+
+if [ $choicevar -eq 1 ]
+	then 
+	all
+
+fi
+}
 
 
 function box64Jammy {
