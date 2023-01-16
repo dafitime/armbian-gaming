@@ -22,8 +22,6 @@ read choicevar
 if [ $choicevar -eq 1 ]
 	then 
 	all
-
-fi
 }
 
 
