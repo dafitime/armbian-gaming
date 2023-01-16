@@ -57,8 +57,8 @@ function winex86 {
 	cp libwine.so.1 ~/wine/lib/
 	echo "Created wine folder and copied libwine.so and libwine.so.1 "
 	echo " "
-	
-	
+	cd ~/Downloads
+	tar xvf /wine-5.13-i686-1sg.txz
 	sudo cp -r /wine-5.13-i686-1sg/usr/ ~/wine/
 	
 
@@ -153,37 +153,11 @@ function box86Jammy {
 	sudo aptitude install mesa-va-drivers:armhf libgtk2.0-0:armhf libsdl2-image-2.0-0:armhf libsdl1.2debian:armhf libopenal1:armhf libvorbisfile3:armhf libgl1:armhf libjpeg62:armhf libcurl4:armhf libasound2-plugins:armhf -y
 	sudo apt update
 	sudo aptitude upgrade
-	menuJammy
+	
 }
 
 function libglu {
 	sudo apt -y install libglu1-mesa 
-	menuJammy
-}
-
-function all {
-	box86
-	box64
-	winex86
-}
-
-function distro {
-	echo "Choose your distro! "
-	echo "1. Armbian Hirsute "
-	echo "2. Armbian Jammy/Sid "
 	
-	read choicevar
-if [ $choicevar -eq 1 ]
-	then 
-	menuHirsute
-elif [ $choicevar -eq 2 ]
-	then 
-	menuJammy
-else 
-	echo "Invalid choice. Exiting script! "
-	exit
-fi
 }
 
-distro
-echo "Greetings, NicoD "
